@@ -8,7 +8,7 @@ class MulLayer:
 
     def forward(self, x, y):
         self.x = x
-        self.y = y                
+        self.y = y
         out = x * y
 
         return out
@@ -34,3 +34,21 @@ class AddLayer:
         dy = dout * 1
 
         return dx, dy
+
+
+class Relu:
+    def __init__(self):
+        self.mask = None  # mask는 True/False로 구성된 넘파이 배열
+
+    def forward(self, x):
+        self.mask = x <= 0
+        out = x.copy()
+        out[self.mask] = 0
+
+        return out
+
+    def backward(self, dout):
+        dout[self.mask] = 0
+        dx = dout
+
+        return dx
